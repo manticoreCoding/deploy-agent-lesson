@@ -1,0 +1,24 @@
+name: Deploy and Update Notion Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_tag:
+        description: 'Manual Version Tag'
+        required: true
+        default: 'v1.0.0'
+
+jobs:
+  deploy-and-notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Simulate Deployment Step
+        run: |
+          echo "Deploying production build..."
+          echo "Deployment successful."
+
+      - name: Show the version we were given
+        run: echo "Version tag is ${{ github.event.inputs.version_tag }}"
