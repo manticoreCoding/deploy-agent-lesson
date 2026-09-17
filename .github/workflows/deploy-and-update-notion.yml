@@ -1,6 +1,8 @@
 name: Deploy and Update Notion Version
 
 on:
+  release:
+    types: [published]
   workflow_dispatch:
     inputs:
       version_tag:
