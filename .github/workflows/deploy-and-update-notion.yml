@@ -13,6 +13,8 @@ on:
 jobs:
   deploy-and-notify:
     runs-on: ubuntu-latest
+    env:
+      VERSION_TAG: ${{ github.event.inputs.version_tag || github.ref_name }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v7
@@ -23,13 +25,12 @@ jobs:
           echo "Deployment successful."
 
       - name: Show the version we were given
-        run: echo "Version tag is ${{ github.event.inputs.version_tag }}"
+        run: echo "Version tag is $VERSION_TAG"
 
       - name: Update Version Tag in Notion
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_ROW_ID: ${{ secrets.NOTION_ROW_ID }}
-          VERSION_TAG: ${{ github.event.inputs.version_tag || github.ref_name }}
         run: |
           FORMATTED_ROW_ID=$(echo $NOTION_ROW_ID | sed -E 's/(.{8})(.{4})(.{4})(.{4})(.{12})/\1-\2-\3-\4-\5/')
           echo "Updating Notion row $FORMATTED_ROW_ID with version $VERSION_TAG"
